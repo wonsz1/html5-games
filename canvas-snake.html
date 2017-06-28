@@ -1,0 +1,101 @@
+<canvas id="gc" width="400" height="400"></canvas>
+<script>
+	var xVelocity = yVelocity = 0;
+	var xPlayer = yPlayer = 10; //player position
+	var gridSize = tailCount = 20;
+	var xApple = yApple = 15; //aple position
+	var trail = [];
+	var tail = 5;
+
+	window.onload = function() {
+		canv = document.getElementById("gc");
+		ctx = canv.getContext("2d");
+		document.addEventListener("keydown", keyPush);
+		setInterval(game, 1000/12); //15 times per second
+	}
+
+
+	function game()
+	{
+		setPlayerPosition();
+
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, canv.width, canv.height);
+
+		ctx.fillStyle = "lime";
+		for (var i=0; i < trail.length; i++) {
+			ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize -2, gridSize - 2);
+			if (trail[i].x == xPlayer && trail[i].y == yPlayer) {
+				tail = 5; //bump! you hit your tail
+			}
+		}
+
+		trail.push({
+			x:xPlayer,
+			y:yPlayer
+		});
+
+		while (trail.length > tail) {
+			trail.shift();
+		}
+
+		snakeFoundApple();
+
+		ctx.fillStyle="red";
+		ctx.fillRect(xApple * gridSize, yApple * gridSize, gridSize - 2, gridSize -2);
+
+
+	}
+
+	function setPlayerPosition()
+	{
+		//moving player into selected direction with current velocity
+		xPlayer += xVelocity; 
+		yPlayer += yVelocity;
+
+		//if player go through end of grid then he should appear on the opposite side
+		if (xPlayer < 0) {
+			xPlayer = gridSize - 1;
+		}
+		if (xPlayer > gridSize -1) {
+			xPlayer = 0;
+		}
+		if (yPlayer < 0) {
+			yPlayer = gridSize - 1;
+		}
+		if (yPlayer > gridSize -1) {
+			yPlayer = 0;
+		}
+	}
+
+	function snakeFoundApple()
+	{
+		if (xApple == xPlayer && yApple == yPlayer) {
+			tail++;
+			//set new apple position
+			xApple = Math.floor(Math.random() * gridSize);
+			yApple = Math.floor(Math.random() * gridSize);
+		}
+	}
+
+	function keyPush(env)
+	{
+		switch(env.keyCode) {
+			case 37:
+				xVelocity = -1;
+				yVelocity = 0;
+				break;
+			case 38:
+				xVelocity = 0;
+				yVelocity = -1;
+				break;
+			case 39:
+				xVelocity = 1;
+				yVelocity = 0;
+				break;
+			case 40:
+				xVelocity = 0;
+				yVelocity = 1;
+		}
+	}
+</script>
