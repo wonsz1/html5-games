@@ -4,7 +4,8 @@
 ### Based on Gamkedo videos https://www.youtube.com/user/GameDevLessons
 ### Use arrow keys to controll. Pres any arrow to start.
 
-## Canvas Solar System
+![alt Screen of snake game](screen.png)
 
+## Canvas Solar System animation
 
-![alt Screen of chart](screen.png)
+![alt Screen of solar system animation](solar_system.jpg)
